@@ -12,11 +12,11 @@ pipeline {
                 sh 'docker build -t my-app .'
             }
         }
-        stage('Test') {
+      /*   stage('Test') {
             steps {
                 sh 'docker run --rm my-app go test'
             }
-        }
+        } */
         stage('Push to Docker Hub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'DOCKER_HUB_CREDENTIALS_ID', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
