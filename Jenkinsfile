@@ -36,12 +36,20 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'DOCKER_HUB_CREDENTIALS_ID', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                   // sh "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin"
+                    sh """
+        echo \${DOCKER_PASSWORD} | docker login -u \${DOCKER_USERNAME} --password-stdin
+        docker tag my-app \${DOCKER_USERNAME}/my-app
+        docker push \${DOCKER_USERNAME}/my-app
+    """
+                }
+
+               /*  withCredentials([usernamePassword(credentialsId: 'DOCKER_HUB_CREDENTIALS_ID', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    // sh "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin"
                     sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
 
                     sh 'docker tag my-app $DOCKER_USERNAME/my-app'
                     sh 'docker push $DOCKER_USERNAME/my-app'
-                }
+                } */
             }
         }
           /*
@@ -57,9 +65,9 @@ pipeline {
             }
         } */
     }
-     post {
-    always {
-      sh 'docker logout'
+    post {
+        always {
+            sh 'docker logout'
+        }
     }
-  }
 }
