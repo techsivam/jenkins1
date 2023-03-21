@@ -3,7 +3,7 @@ pipeline {
     
     tools {
         // specify the Docker installation
-        docker 'docker'
+        dockerTool 'Docker'
     }
     
     stages {
