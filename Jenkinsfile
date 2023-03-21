@@ -44,7 +44,7 @@ pipeline {
                             docker push \${DOCKER_USERNAME}/my-app"
  }
                     }catch(err){
-                        echo "Failed: $(err)"
+                        echo "Failed Error"
                     }
                 }
 
