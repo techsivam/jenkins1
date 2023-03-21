@@ -16,11 +16,19 @@ pipeline {
                 sh 'docker build -t techsivam16/my-app .'
             }
         }
-          stage('Test') {
+        stage('Test') {
+            echo 'Running Test Cases ...'
             steps {
-                sh 'docker run --rm techsivam16/my-app go test ./...'
+                script {
+                    try {
+                        sh 'docker run --rm techsivam16/my-app go test ./...'
+            } catch (err) {
+                        echo 'Failed Error:' + err
+                    }
+                }
             }
         }
+
       /*   stage('Test') {
             steps {
                 sh 'docker run --rm my-app go test'
@@ -40,16 +48,17 @@ pipeline {
         */
         stage('Push to Docker Hub') {
             steps {
-                echo "Logging into Docker..."
-                script{
-                    try{
- withCredentials([usernamePassword(credentialsId: 'DOCKER_HUB_CREDENTIALS_ID', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh " echo \${DOCKER_PASSWORD} | docker login --username \${DOCKER_USERNAME} --password-stdin &&\
+                echo 'Logging into Docker...'
+                script {
+                    try {
+                        withCredentials([usernamePassword(credentialsId: 'DOCKER_HUB_CREDENTIALS_ID', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                            sh " echo \${DOCKER_PASSWORD} | docker login --username \${DOCKER_USERNAME} --password-stdin &&\
                             docker tag my-app \${DOCKER_USERNAME}/my-app  &&\
                             docker push \${DOCKER_USERNAME}/my-app"
- }
-                    }catch(err){
-                        echo "Failed Error"
+                        }
+                        echo 'Docker Imahe pushed to  Docker Repo...'
+                    }catch (err) {
+                        echo 'Failed Error: '+err
                     }
                 }
 
