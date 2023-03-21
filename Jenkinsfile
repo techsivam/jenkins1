@@ -39,8 +39,8 @@ pipeline {
                    // sh "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin"
                     sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
 
-                    sh 'docker tag my-app DOCKER_USERNAME/my-app'
-                    sh 'docker push DOCKER_USERNAME/my-app'
+                    sh 'docker tag my-app $DOCKER_USERNAME/my-app'
+                    sh 'docker push $DOCKER_USERNAME/my-app'
                 }
             }
         }
