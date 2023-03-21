@@ -1,6 +1,11 @@
 pipeline {
     agent any
     
+    tools {
+        // specify the Docker installation
+        docker 'docker'
+    }
+    
     stages {
         stage('Build') {
             steps {
