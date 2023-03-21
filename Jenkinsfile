@@ -16,6 +16,11 @@ pipeline {
                 sh 'docker build -t techsivam16/my-app .'
             }
         }
+          stage('Test') {
+            steps {
+                sh 'docker run --rm techsivam16/my-app go test ./...'
+            }
+        }
       /*   stage('Test') {
             steps {
                 sh 'docker run --rm my-app go test'
