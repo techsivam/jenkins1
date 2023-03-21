@@ -17,9 +17,10 @@ pipeline {
             }
         }
         stage('Test') {
-            echo 'Running Test Cases ...'
+            
             steps {
                 script {
+                    echo 'Running Test Cases ...'
                     try {
                         sh 'docker run --rm techsivam16/my-app go test ./...'
             } catch (err) {
