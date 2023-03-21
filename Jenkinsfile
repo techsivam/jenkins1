@@ -35,12 +35,17 @@ pipeline {
         */
         stage('Push to Docker Hub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'DOCKER_HUB_CREDENTIALS_ID', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh """
-        echo \${DOCKER_PASSWORD} | docker login -u \${DOCKER_USERNAME} --password-stdin
-        docker tag my-app \${DOCKER_USERNAME}/my-app
-        docker push \${DOCKER_USERNAME}/my-app
-    """
+                echo "Logging into Docker..."
+                script{
+                    try{
+ withCredentials([usernamePassword(credentialsId: 'DOCKER_HUB_CREDENTIALS_ID', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh " echo \${DOCKER_PASSWORD} | docker login --username \${DOCKER_USERNAME} --password-stdin &&\
+                            docker tag my-app \${DOCKER_USERNAME}/my-app  &&\
+                            docker push \${DOCKER_USERNAME}/my-app"
+ }
+                    }catch(err){
+                        error("Failed: $(err)")
+                    }
                 }
 
                /*  withCredentials([usernamePassword(credentialsId: 'DOCKER_HUB_CREDENTIALS_ID', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
