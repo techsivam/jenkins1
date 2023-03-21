@@ -21,6 +21,7 @@ pipeline {
                 sh 'docker run --rm my-app go test'
             }
         } */
+         /*
         stage('Login') {
             steps {
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
@@ -31,7 +32,7 @@ pipeline {
                 sh 'docker push techsivam16/my-app'
             }
         }
-        /*
+        */
         stage('Push to Docker Hub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'DOCKER_HUB_CREDENTIALS_ID', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
@@ -41,6 +42,7 @@ pipeline {
                 }
             }
         }
+          /*
          stage('Deploy to Kubernetes') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'KUBERNETES_CREDENTIALS_ID', usernameVariable: 'KUBERNETES_USERNAME', passwordVariable: 'KUBERNETES_PASSWORD')]) {
